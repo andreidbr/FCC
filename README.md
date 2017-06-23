@@ -1,2 +1,10 @@
-# FCC
-FreeCodeCamp projects
+![FCC](fcc.png)
+# My FreeCodeCamp projects
+
+I started FreeCodeCamp some time ago but various personal challenges and a somewhat short attention span drove me away several times from the great project.
+
+After experimenting with GitHub through the JavaScript30 course, I now want to keep my FCC projects right here, not just on CodePen.
+
+These are my current projects:
+
+[Weather App](https://github.com/andreidbr/FCC/tree/master/WeatherApp)
