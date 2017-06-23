@@ -1,0 +1,27 @@
+body {
+  min-height: 100vh;
+  background: #fafafa;
+  background-image: url(base.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: all 1s;
+  transition-timing-function: ease-in-out;
+}
+.container {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  color: #212121;
+}
+.container > * {
+  align-self: center;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}

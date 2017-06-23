@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My weather app</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+			  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous"></script>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+  <div class="container">
+    <div class="title">
+      <h1><span id="sun">🌞</span><span id="cloud">⛅</span> So, how's the weather? <span id="rain">☔</span><span id="snow">❄</span></h1>
+    </div>
+    <div id="weather">
+      <h2> In <span id="location"></span> it's currently:</h2>
+      <h1><span id="degrees"></span>°<span id="unit">C</span></h1>
+      <h2 id="summary"></h2>
+      <h3 id="disc"><a href="https://darksky.net/poweredby/">Powered by DarkSky</a></h3>
+    </div>
+  </div>
+  <script src="scripts.js"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=[API_KEY]&callback=initMap">
+    </script>
+
+  </body>
+</html>
