@@ -4,48 +4,155 @@
     <title>Wikipedia Viewer</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+			  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous"></script>
+      
+    <script src="https://use.fontawesome.com/8942291bf0.js"></script>
     <!--<link href="css/style.css" rel="stylesheet">-->
   </head>
   <body>
   <div class="container">
-    <p>Search through Wikipedia</p>
-    <input type="text" name="searchbox" value="search">
-    <p>Or go to <a href="https://en.wikipedia.org/wiki/Special:Random">a random article</a>.</p>
+    <p>Feeling focused? Search through Wikipedia for what you want</p>
+    <p id="searchBar"><input id="search-box" type="text" name="searchbox" placeholder="Type here and click the magnifying glass"><i class="fa fa-search" aria-hidden="true" title="Search!"></i></p>
+    <p>Feeling lucky? <a href="https://en.wikipedia.org/wiki/Special:Random">Go to a random article <i class="fa fa-random" aria-hidden="true"></i></a></p>
+    <div id="results"></div>
   </div>
 
   <style>
-  html {
-    box-sizing: border-box;
-  }
-  body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: sans-serif;
-    font-size: 20px;
-    margin: 0;
-    background: #fafafa;
-    background-image: url(wiki_bg.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-  .container {
-    background: rgba(255,255,255,0.1);
-    height:400px;
-    padding: 100px;
-    width:100%;
-    border:1px solid white;
-    text-align: center;
-    color: #212121;
-  }
-  /*.container > * {
-    align-self: center;
-  }*/
-  a {
-    text-decoration: none;
-    color: #000;
-  }
+    html {
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      font-size: 30px;
+      margin: 0;
+      background: #fafafa;
+      background-image: url(wiki_bg.jpg);
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .container {
+      background: rgba(255,255,255,0.4);
+      box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
+      min-height:400px;
+      padding: 100px;
+      border:1px solid white;
+      text-align: center;
+      color: #212121;
+      align-self: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      flex-direction: column;
+      transition: all 1s;
+      transition-timing-function: ease-in-out;
+    }
+    #searchBar {
+      align-self: center;
+    }
+    input {
+      background: rgba(255,255,255,0.7);
+      box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    .fa-search {
+      padding-left: 10px;
+      cursor: pointer;
+      vertical-align:middle;
+    }
+    .fa-random {
+      vertical-align:middle;
+    }
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+    #results {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      align-self: center;
+      font-size: 20px;
+      text-align: left;
+    }
+    .big {
+      min-height: 75vh;
+      width: 90ch;
+      justify-content: flex-start;
+      padding-top: 0;
+    }
   </style>
+  <script>
+    const search = document.querySelector('.fa-search');
+    const cont = document.querySelector('.container');
+    
+    //Actual search function
+    function doSearch() {
+      cont.classList.add('big');
+      // const searchQuery = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info|extracts&generator=search&callback=?&inprop=url&exsentences=3&gsrsearch="
+      const searchTerm = $("#search-box").val();
+
+      $.getJSON(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${searchTerm}&limit=10&namespace=0&format=json&origin=*`, function(data) {
+        var theresults = data;
+        console.log(data);
+        processResult(data);
+      })
+        // $.ajax({
+        //       url: 'http://en.wikipedia.org/w/api.php',
+        //       data: { action: 'query', list: 'search', srsearch: $("input[name=searchbox]").val(), format: 'json' },
+        //       dataType: 'jsonp',
+        //       success: function (x) {
+        //           console.log('title', x.query.search[0].title);
+        //       }
+        //   });
+
+        // $.ajax({
+        //   url: '//www.wikidata.org/w/api.php',
+        //   data: { action: 'wbgetentities', ids: mw.config.get('wgWikibaseItemId'), format: 'json' },
+        //   dataType: 'jsonp',
+        //   success: function (x) {
+        //     console.log('wb label', x.entities.Q39246.labels.en.value);
+        //     console.log('wb description', x.entities.Q39246.descriptions.en.value);
+        //   }
+        // });
+
+        // $.ajax( {
+        // url: remoteUrlWithOrigin,
+        // data: queryData,
+        // dataType: 'json',
+        // type: 'GET',
+        // headers: { 'Api-User-Agent': 'andrey.dobra@gmail.com' },
+        // success: function(data) {
+        //   // do something with data
+        // }
+        // } );
+    }
+    function processResult(apiResult){
+      apiResult.shift();
+      // console.log(JSON.stringify(apiResult));
+      
+      for (const res of apiResult){
+        $('#results').append('<p>'+res+'</p>');
+      }
+      // if (apiResult.query.pages[-1]){
+      //   $('#results').append('<p>No results matched your query. Try again.</p>');
+      // }
+      // else {
+      //   for (const res in apiResult.query.pages){
+      //   $('#results').append('<p>'+res+'</p>');
+      //   }
+      // }
+    }
+    // Hook up event listeners
+    search.addEventListener('click', doSearch);
+  </script>
   </body>
 </html>
