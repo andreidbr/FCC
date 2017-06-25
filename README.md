@@ -8,3 +8,5 @@ After experimenting with GitHub through the JavaScript30 course, I now want to k
 These are my current projects:
 
 [Weather App](https://github.com/andreidbr/FCC/tree/master/WeatherApp)
+
+[Wikipedia Viewer](https://github.com/andreidbr/FCC/tree/master/WikiViewer)
