@@ -4,6 +4,10 @@
     <title>Twitch Streamer Checker</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script
+			  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous"></script>
     <!--<link href="style.css" rel="stylesheet">-->
   </head>
   <body>
@@ -16,78 +20,114 @@
       </ul>
     </div>
     <div class="list">
-      
+      <ul class="streamers">
+      </ul>
     </div>
   </div>
   <style>
-  html {
-    box-sizing: border-box;
-  }
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
-  body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: sans-serif;
-    font-size: 30px;
-    margin: 0;
-    background: #fafafa;
-    background-image: url(twitch_bg.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-  a {
-    text-decoration: none;
-    color:black;
-    background:rgba(0,0,0,0.05);
-    border-radius: 20px
-  }
-  .container {
-    background: rgba(255,255,255,0.3);
-    box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
-    min-height:400px;
-    min-width: 600px;
-    padding: 100px;
-    border:1px solid white;
-    text-align: center;
-    color: #212121;
-    align-self: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    flex-direction: column;
-  }
-  .selector {
-    align-self: center;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    flex-direction: column;
-  }
-  .menu {
-    padding: 0;
-    display: flex;
-    list-style: none;
-    justify-content: space-around;
-    /*align-items: flex-start;*/
-    align-content: flex-start;
-    margin:100px 0;
-  }
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      font-size: 30px;
+      margin: 0;
+      background: #fafafa;
+      background-image: url(twitch_bg.png);
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    a {
+      text-decoration: none;
+      color:black;
+      background:rgba(0,0,0,0.05);
+      border-radius: 20px
+    }
+    .container {
+      background: rgba(255,255,255,0.3);
+      box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
+      min-height:400px;
+      min-width: 600px;
+      max-width: 900px;
+      padding: 100px;
+      border:1px solid white;
+      text-align: center;
+      color: #212121;
+      align-self: center;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+    .selector {
+      align-self: flex-start;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+    .menu {
+      padding: 0;
+      display: flex;
+      align-self: flex-start;
+      list-style: none;
+      justify-content: space-around;
+      align-items: flex-start;
+      align-content: flex-start;
+      margin:100px 0;
+    }
+    .menu li {
+      align-self: flex-start;
+    }
 
-  .menu a {
-    display: inline-block;
-    padding:5px;
-    margin:0 20px;
-    color:black;
-  }
+    .menu a {
+      display: inline-block;
+      padding:5px;
+      margin:0 20px;
+      color:black;
+    }
+    .streamers {
+      font-size: 20px;
+    }
   </style>
   <script>
-    
+    const streams = ["freecodecamp", "moonduckTV", "BeyondTheSummit", "ESL_CSGO", "ESL_Overwatch", "DSPStanky"];
+    function getStreams(streamName) {
+      $.getJSON(`https://wind-bow.gomix.me/twitch-api/streams/${streamName}?callback=?`, function(data) {
+        console.log(data.stream);
+        
+        if (data.stream !== null) {
+          $('.streamers').append(`
+            <li>
+              <span class="streamAvatar"><img src=${data.stream.channel.logo} width=50px></span>
+              <span class="streamName">${data.stream.channel.display_name}: </span>
+              <a href="${data.stream.channel.url}"><span class="streamTitle">${data.stream.channel.status}</span></a>
+            </li>`);
+        } 
+        // else {
+        //   $('.streamers').append(`
+        //     <li>
+        //       <span class="streamAvatar"><img src=${data.stream.channel.logo} width=50px></span>
+        //       <span class="streamName">${data.stream.channel.display_name}: </span>
+        //       <a href="${data.stream.channel.url}"><span class="streamTitle">${data.stream.channel.status}</span></a>
+        //     </li>`);
+        // }
+        
+      });
+  }
+  for (let name of streams) {
+    getStreams(name);
+  }
   </script>
   </body>
 </html>
