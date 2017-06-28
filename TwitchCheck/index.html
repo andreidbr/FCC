@@ -14,9 +14,9 @@
   <div class="container">
     <div class="selector">
       <ul class="menu">
-        <li><a href="">All</a></li>
-        <li><a href="">Online</a></li>
-        <li><a href="">Offline</a></li>
+        <li id="allBtn"><a href="">All</a></li>
+        <li id="onlineBtn"><a href="">Online</a></li>
+        <li id="offlineBtn"><a href="">Offline</a></li>
       </ul>
     </div>
     <div class="list">
@@ -46,88 +46,121 @@
     }
     a {
       text-decoration: none;
-      color:black;
+      color:#212121;
       background:rgba(0,0,0,0.05);
       border-radius: 20px
     }
     .container {
       background: rgba(255,255,255,0.3);
-      box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
+      box-shadow: 0 0 0 5px rgba(0,0,0,0.5);
       min-height:400px;
       min-width: 600px;
       max-width: 900px;
-      padding: 100px;
+      padding: 50px;
       border:1px solid white;
       text-align: center;
-      color: #212121;
-      align-self: center;
+      color: black;
+      /*align-self: center;
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
       align-content: flex-start;
       flex-wrap: wrap;
-      flex-direction: column;
+      flex-direction: column;*/
     }
-    .selector {
+    /*.selector {
       align-self: flex-start;
       display: flex;
       justify-content: center;
       align-items: flex-start;
       flex-wrap: wrap;
       flex-direction: column;
+    }*/
+    img {
+      float: left;
+      clear: both;
     }
     .menu {
       padding: 0;
-      display: flex;
-      align-self: flex-start;
       list-style: none;
+      text-align: center;
+      /*display: flex;
       justify-content: space-around;
-      align-items: flex-start;
-      align-content: flex-start;
-      margin:100px 0;
+      align-items: center;
+      align-content: flex-start;*/
+      /*margin:100px 0;*/
     }
     .menu li {
-      align-self: flex-start;
+      display: inline-block;
     }
 
     .menu a {
-      display: inline-block;
       padding:5px;
       margin:0 20px;
       color:black;
     }
     .streamers {
       font-size: 20px;
+      text-align: left;
+      list-style: none;
+    }
+    .streamAvatar {
+      vertical-align: center;
+    }
+    .streamName {
+      font-weight: bold;
     }
   </style>
   <script>
+    // Array of streams to be checked
     const streams = ["freecodecamp", "moonduckTV", "BeyondTheSummit", "ESL_CSGO", "ESL_Overwatch", "DSPStanky"];
+    // Getting the stream information
     function getStreams(streamName) {
       $.getJSON(`https://wind-bow.gomix.me/twitch-api/streams/${streamName}?callback=?`, function(data) {
-        console.log(data.stream);
-        
+        // If online, display relevant information
         if (data.stream !== null) {
           $('.streamers').append(`
-            <li>
-              <span class="streamAvatar"><img src=${data.stream.channel.logo} width=50px></span>
-              <span class="streamName">${data.stream.channel.display_name}: </span>
-              <a href="${data.stream.channel.url}"><span class="streamTitle">${data.stream.channel.status}</span></a>
+            <li class="online">
+              <p>
+                <span class="streamAvatar"><img src=${data.stream.channel.logo} width=50px></span>
+                <span class="streamName">${data.stream.channel.display_name}: </span>
+                <a href="${data.stream.channel.url}"><span class="streamTitle">${data.stream.channel.status}</span></a>
+              </p>
             </li>`);
-        } 
-        // else {
-        //   $('.streamers').append(`
-        //     <li>
-        //       <span class="streamAvatar"><img src=${data.stream.channel.logo} width=50px></span>
-        //       <span class="streamName">${data.stream.channel.display_name}: </span>
-        //       <a href="${data.stream.channel.url}"><span class="streamTitle">${data.stream.channel.status}</span></a>
-        //     </li>`);
-        // }
-        
+        }
+        // If offline, do another API call to get logo & display name
+        else {
+          console.log(streamName);
+          $.getJSON(`https://wind-bow.gomix.me/twitch-api/channels/${streamName}?callback=?`, function(data) {
+          $('.streamers').append(`
+            <li class="offline">
+              <p>
+                <span class="streamAvatar"><img src=${data.logo} width=50px></span>
+                <span class="streamName">${data.display_name} </span>is not streaming
+              </p>
+            </li>`);
+          });
+        }
       });
-  }
-  for (let name of streams) {
-    getStreams(name);
-  }
+    }
+    // Loop through array of streams and populate list
+    for (let name of streams) {
+      getStreams(name);
+    }
+    // Enable buttons to do their jobs
+    $('#allBtn').click(function(event) {
+      event.preventDefault();
+      $('.online').show();
+      $('.offline').show();
+    });
+    $('#onlineBtn').click(function(event) {
+      event.preventDefault();
+      $('.offline').hide();
+    });
+    $('#offlineBtn').click(function(event) {
+      event.preventDefault();
+      $('.online').hide();
+    });
   </script>
   </body>
 </html>
