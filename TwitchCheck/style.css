@@ -1,0 +1,62 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  font-size: 30px;
+  margin: 0;
+  background: #fafafa;
+  background-image: url(twitch_bg.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+a {
+  text-decoration: none;
+  color:#212121;
+  background:rgba(0,0,0,0.05);
+  border-radius: 20px
+}
+.container {
+  background: rgba(255,255,255,0.3);
+  box-shadow: 0 0 0 5px rgba(0,0,0,0.5);
+  min-height:400px;
+  min-width: 600px;
+  padding: 50px;
+  border:1px solid white;
+  text-align: center;
+  color: black;
+}
+.menu {
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+.menu li {
+  display: inline-block;
+}
+
+.menu a {
+  padding:5px;
+  margin:0 20px;
+  color:black;
+}
+.streamers {
+  font-size: 20px;
+  text-align: left;
+  list-style: none;
+}
+.streamAvatar {
+  display: inline-block;
+  vertical-align: middle;
+}
+.streamName {
+  font-weight: bold;
+  display: inline-block;
+}

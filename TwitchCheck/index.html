@@ -8,7 +8,7 @@
 			  src="https://code.jquery.com/jquery-3.2.1.js"
 			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
 			  crossorigin="anonymous"></script>
-    <!--<link href="style.css" rel="stylesheet">-->
+    <link href="style.css" rel="stylesheet">
   </head>
   <body>
   <div class="container">
@@ -25,91 +25,7 @@
     </div>
   </div>
   <style>
-    html {
-      box-sizing: border-box;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: sans-serif;
-      font-size: 30px;
-      margin: 0;
-      background: #fafafa;
-      background-image: url(twitch_bg.png);
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    a {
-      text-decoration: none;
-      color:#212121;
-      background:rgba(0,0,0,0.05);
-      border-radius: 20px
-    }
-    .container {
-      background: rgba(255,255,255,0.3);
-      box-shadow: 0 0 0 5px rgba(0,0,0,0.5);
-      min-height:400px;
-      min-width: 600px;
-      max-width: 900px;
-      padding: 50px;
-      border:1px solid white;
-      text-align: center;
-      color: black;
-      /*align-self: center;
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      align-content: flex-start;
-      flex-wrap: wrap;
-      flex-direction: column;*/
-    }
-    /*.selector {
-      align-self: flex-start;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      flex-direction: column;
-    }*/
-    img {
-      float: left;
-      clear: both;
-    }
-    .menu {
-      padding: 0;
-      list-style: none;
-      text-align: center;
-      /*display: flex;
-      justify-content: space-around;
-      align-items: center;
-      align-content: flex-start;*/
-      /*margin:100px 0;*/
-    }
-    .menu li {
-      display: inline-block;
-    }
-
-    .menu a {
-      padding:5px;
-      margin:0 20px;
-      color:black;
-    }
-    .streamers {
-      font-size: 20px;
-      text-align: left;
-      list-style: none;
-    }
-    .streamAvatar {
-      vertical-align: center;
-    }
-    .streamName {
-      font-weight: bold;
-    }
+    
   </style>
   <script>
     // Array of streams to be checked
@@ -135,8 +51,8 @@
           $('.streamers').append(`
             <li class="offline">
               <p>
-                <span class="streamAvatar"><img src=${data.logo} width=50px></span>
-                <span class="streamName">${data.display_name} </span>is not streaming
+                <span class="streamAvatar"><img src=${data.logo} width=50px align="middle"></span>
+                <span class="streamName">${data.display_name}</span> is not streaming
               </p>
             </li>`);
           });
@@ -155,11 +71,13 @@
     });
     $('#onlineBtn').click(function(event) {
       event.preventDefault();
+      $('.online').show();
       $('.offline').hide();
     });
     $('#offlineBtn').click(function(event) {
       event.preventDefault();
       $('.online').hide();
+      $('.offline').show();
     });
   </script>
   </body>
