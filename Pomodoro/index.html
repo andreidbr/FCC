@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Pomodoro Clock</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet"> 
+  <!--<link href="css/style.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="container">
+  <div class="clock">
+    00:00
+  </div>
+  <div class="controls">
+    <p class="work">
+      Work period: - 25 +
+    </p>
+    <p class="break">
+      Break period: - 5 +
+    </p>
+  </div>
+  <p class="controlText">
+    Start
+  </p>
+  <div class="details">
+    <p>A Pomodoro clock improves time management by signaling when you should work and when you should take a break.</p>
+    <p>Set the work period. Set the break period. And then hit start.</p>
+  </div>
+</div>
+
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20px;
+    margin: 0;
+    background: #607D8B;
+  }
+  .container {
+    /*height: 400px;*/
+    max-width: 500px;
+    background: rgba(34, 34, 34, 0.85);
+    box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
+    padding: 50px;
+    border:1px solid #fafafa;
+    text-align: center;
+    color: #fafafa;
+  }
+  .clock {
+    /*min-width: 50%;*/
+    /*min-height: 20%;*/
+    display: inline-block;
+    background: #757575;
+    font-size: 50px;
+    padding: 0 10px;
+  }
+  .controls {
+    font-size: 25px;
+  }
+  .controlText {
+    font-size: 40px;
+    color: #536DFE;
+  }
+  .details {
+    font-size: 20px;
+    color: #CFD8DC;
+    padding-bottom: 0;
+  }
+</style>
+
+<script>
+  
+</script>
+</body>
+</html>
