@@ -15,7 +15,7 @@
 <div class="container">
   <div class="calculator">
     <div class="calcDisplay">
-      <p id="display">0</p>
+      <p id="display"></p>
     </div>
     <div class="buttons">
       <p><button type="button" class="buttonDig">7</button><button type="button" class="buttonDig">8</button><button type="button" class="buttonDig">9</button><button type="button" class="buttonOp">+</button></p>
@@ -46,8 +46,8 @@
     background-repeat: no-repeat;
   }
   .calculator {
-    height: 600px;
-    width: 500px;
+    /*height: 600px;
+    width: 500px;*/
     background: rgba(34, 34, 34, 0.85);
     box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
     padding: 50px;
@@ -164,12 +164,20 @@
   });
   // Functionality for operator buttons
   $('.buttonOp').click(function(event) {
-    if ($('#display').html() === '0') {
+    if ($('#display').html() === '' || $('#display').html() === '.') {
       return;
-    } else {
+    } else if ($('#display').html().endsWith('+') || $('#display').html().endsWith('-') || $('#display').html().endsWith('*') || $('#display').html().endsWith('/')) {
+      return;
+    }
+    else {
       $('#display').append(this.innerHTML);
       clickCounter++;
     }
+  });
+  // Functionality for Equal button
+  $('.buttonEq').click(function(event) {
+    console.log(eval($('#display').html()));
+    $('#display').text(eval($('#display').html()));
   });
 </script>
 </body>

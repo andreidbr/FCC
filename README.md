@@ -12,3 +12,5 @@ These are my current projects:
 [Wikipedia Viewer](https://github.com/andreidbr/FCC/tree/master/WikiViewer)
 
 [Twitch Checker](https://github.com/andreidbr/FCC/tree/master/TwitchCheck)
+
+[JS Calculator](https://github.com/andreidbr/FCC/tree/master/JSCalc)
