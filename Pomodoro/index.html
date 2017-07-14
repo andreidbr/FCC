@@ -9,20 +9,17 @@
 </head>
 <body>
 <div class="container">
-  <div class="clock">
-    00:00
-  </div>
+  <div class="clock">00:00</div>
   <div class="controls">
     <p class="work">
-      Work period: - 25 +
+      Work period: <span class="ments workDecrement">-</span> <span class="workPeriod">25</span> <span class="ments workIncrement">+</span>
     </p>
     <p class="break">
-      Break period: - 5 +
+      Break period: <span class="ments breakDecrement">-</span> <span class="breakPeriod">5</span> <span class="ments breakIncrement">+</span>
     </p>
   </div>
-  <p class="controlText">
-    Start
-  </p>
+  <p class="controlText">Start</p>
+  <span class="resetText">Reset</span>
   <div class="details">
     <p>A Pomodoro clock improves time management by signaling when you should work and when you should take a break.</p>
     <p>Set the work period. Set the break period. And then hit start.</p>
@@ -62,8 +59,16 @@
     font-size: 25px;
   }
   .controlText {
+    cursor: pointer;
     font-size: 40px;
     color: #536DFE;
+  }
+  .resetText {
+    cursor: pointer;
+    color: #FF5252;
+  }
+  .ments {
+    cursor: pointer;
   }
   .details {
     font-size: 20px;
@@ -73,7 +78,113 @@
 </style>
 
 <script>
-  
+  let countdown;
+  let clockDisplay = document.querySelector('.clock');
+  let timeEnd;
+  let period = 1;
+
+  function timer(seconds) {
+    clearInterval(countdown);
+    const now = Date.now();
+    const then = now + seconds * 1000;
+    displayTimeLeft(seconds);
+    countdown = setInterval(() => {
+      const secondsLeft = Math.round((then - Date.now()) / 1000);
+      // Check if the interval needs to stop
+      if (secondsLeft < 0) {
+        clearInterval(countdown);
+        if (period === 1) {
+          control.textContent = 'Break time';
+          period = 0;
+          timeUse = parseInt(breakTime.innerHTML) * 60;
+          timer(timeUse);
+        } else if (period === 0) {
+          control.textContent = 'Work time';
+          period = 1;
+          timeUse = parseInt(workTime.innerHTML) * 60;
+          timer(timeUse);
+        }
+        return;
+      }
+      displayTimeLeft(secondsLeft);
+    }, 1000);
+  }
+
+  function displayTimeLeft(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainderSeconds = seconds % 60;
+    const display = `${minutes}:${remainderSeconds < 10 ? '0' : ''}${remainderSeconds}`;
+    clockDisplay.textContent = display;
+  }
+
+  // Set up the inputs
+  const control = document.querySelector('.controlText');
+  const reset = document.querySelector('.resetText');
+  const workTime = document.querySelector('.workPeriod');
+  const breakTime = document.querySelector('.breakPeriod');
+  let timeUse;
+
+  control.addEventListener('click', function() {
+    timeUse = parseInt(workTime.innerHTML) * 60;
+    timer(timeUse);
+    control.textContent = 'Work time';
+  });
+
+  reset.addEventListener('click', function() {
+    clearInterval(countdown);
+    clockDisplay.textContent = '00:00';
+  });
+
+  const workDec = document.querySelector('.workDecrement');
+  const breakDec = document.querySelector('.breakDecrement');
+  const workInc = document.querySelector('.workIncrement');
+  const breakInc = document.querySelector('.breakIncrement');
+
+  workDec.addEventListener('click', function() {
+    let value = parseInt(workTime.innerHTML);
+    if (value <= 1) {
+      return;
+    } else {
+      workTime.textContent = value - 1;
+    }
+  });
+  breakDec.addEventListener('click', function() {
+    let value = parseInt(workTime.innerHTML);
+    if (value <= 1) {
+      return;
+    } else {
+      workTime.textContent = value - 1;
+    }
+  });
+
+  workInc.addEventListener('click', function() {
+    let value = parseInt(workTime.innerHTML);
+    if (value >= 60) {
+      return;
+    } else {
+      workTime.textContent = value + 1;
+    }
+  });
+  breakInc.addEventListener('click', function() {
+    let value = parseInt(workTime.innerHTML);
+    if (value >= 60) {
+      return;
+    } else {
+      workTime.textContent = value + 1;
+    }
+  });
+  // May refactor to enable Start/Pause functionality
+  // control.addEventListener('click', function() {
+  //   if (control.textContent === 'Start') {
+  //     timeUse = parseInt(workTime.innerHTML) * 60;
+  //     timer(timeUse);
+  //     control.textContent = 'Pause';
+  //   } else {
+  //     clearInterval(countdown);
+  //     console.log(clockDisplay.innerHTML);
+  //     control.textContent = 'Start';
+  //   }
+  // });
 </script>
 </body>
 </html>

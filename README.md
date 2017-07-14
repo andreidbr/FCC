@@ -14,3 +14,5 @@ These are my current projects:
 [Twitch Checker](https://github.com/andreidbr/FCC/tree/master/TwitchCheck)
 
 [JS Calculator](https://github.com/andreidbr/FCC/tree/master/JSCalc)
+
+[Pomodoro Clock](https://github.com/andreidbr/FCC/tree/master/Pomodoro)
