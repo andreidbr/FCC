@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TicTacToe</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+  <!--<link href="css/style.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="container">
+  <div class="chooser">
+    <p>Choose your weapon but remember that X always goes first:</p>
+    <p><span class="choice" id="pickX">X</span> or <span class="choice" id="pickO">O</span></p>
+  </div>
+  <p class="turn">Turn: <span class="turnText"></span></p>
+  <div id="board">
+    <div id="oneOne" class="box"></div><div id="oneTwo" class="box"></div><div id="oneThree" class="box"></div>
+    <div id="TwoOne" class="box"></div><div id="twoTwo" class="box"></div><div id="threeThree" class="box"></div>
+    <div id="threeOne" class="box"></div><div id="secondTwo" class="box"></div><div id="threeThree" class="box"></div>
+  </div>
+  <p class="score">X wins: <span id="xWins">0</span> | Ties: <span id="ties">0</span> | O wins: <span id="oWins">0</span></p>
+  <p id="resetText">Reset</p>
+</div>
+
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    margin: 0;
+    background: #3F51B5;
+  }
+  .container {
+    /*height: 400px;*/
+    /* max-width: 500px; */
+    /* max-height: 350px; */
+    max-width: 350px;
+    background: rgba(34, 34, 34, 0.85);
+    box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
+    padding: 50px; 
+    border:1px solid #fafafa;
+    text-align: center;
+    color: #fafafa;
+  }
+  .chooser {
+    display: none;
+  }
+  .choice {
+    font-size: 40px;
+    margin: 10px;
+  }
+  .turn {
+    margin: 0 0 5 0;
+  }
+  .score {
+    margin: 5 0 0 0;
+  }
+  #board > div {
+    display: inline-block;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    font-size: 80px;
+    vertical-align: middle;
+    color: #FF5252;
+    background: #757575;
+  }
+  #resetText {
+    display: none;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+</style>
+
+<script>
+  const boxes = document.querySelectorAll('.box');
+  let turn = document.querySelector('.turnText');
+  const res = document.getElementById('resetText');
+  let player = 1;
+  turn.innerHTML = 'X';
+  let winsX = 0;
+  let winsO = 0;
+  let tie = 0;
+  let filled = 0;
+
+  function checkWin(elem) {
+    if (document.getElementById('oneOne').innerHTML === elem && document.getElementById('oneTwo').innerHTML === elem && document.getElementById('oneThree').innerHTML === elem) {
+      filled = 10;
+      turn.innerHTML = `${elem} wins!`;
+      if (player === 0) {
+        winsX++;
+        document.getElementById('xWins').innerHTML = winsX;
+        res.style.display = "inherit";
+      } else {
+        winsO++;
+        document.getElementById('oWins').innerHTML = winsO;
+        res.style.display = "inherit";
+      }
+    } 
+    if (filled === 9) {
+      turn.innerHTML = "It's a tie!";
+      tie++;
+      document.getElementById('ties').innerHTML = tie;
+      res.style.display = "inherit";
+    }
+  }
+  function displayChar() {
+    if (this.innerHTML !== 'X' && this.innerHTML !== 'O') {
+      filled++;
+      if (filled <= 9) {
+        if (player === 1) {
+          this.innerHTML = 'X';
+          player = 0;
+          turn.innerHTML = 'O';
+          checkWin('X');
+        } else {
+          this.innerHTML = 'O';
+          player = 1;
+          turn.innerHTML = 'X';
+          checkWin('O');
+        }
+      }
+    }
+  }
+  function reset() {
+    boxes.forEach(box => box.innerHTML = "");
+    filled = 0;
+    player = 1;
+    turn.innerHTML = 'X';
+    res.style.display = "none"; 
+  }
+  res.addEventListener('click', reset);
+  boxes.forEach(box => box.addEventListener('click', displayChar));
+</script>
+</body>
+</html>
