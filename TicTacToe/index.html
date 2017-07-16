@@ -21,7 +21,7 @@
   </div>
   <p class="score">X wins: <span id="xWins">0</span> | Ties: <span id="ties">0</span> | O wins: <span id="oWins">0</span></p>
   <p id="resetText">Reset</p>
-  <p id="ai">AI</p>
+  <!-- <p id="ai">AI</p> -->
 </div>
 
 <style>
@@ -92,70 +92,65 @@
     if (document.getElementById('oneOne').innerHTML === elem && document.getElementById('oneTwo').innerHTML === elem && document.getElementById('oneThree').innerHTML === elem) {
       filled = 10;
       turn.innerHTML = `${elem} wins!`;
+      res.style.display = "inherit";
       if (player === 0) {
         winsX++;
         document.getElementById('xWins').innerHTML = winsX;
-        res.style.display = "inherit";
       } else {
         winsO++;
         document.getElementById('oWins').innerHTML = winsO;
-        res.style.display = "inherit";
       }
     }
     // Win condition second row
     if (document.getElementById('twoOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('twoThree').innerHTML === elem) {
       filled = 10;
       turn.innerHTML = `${elem} wins!`;
+      res.style.display = "inherit";
       if (player === 0) {
         winsX++;
         document.getElementById('xWins').innerHTML = winsX;
-        res.style.display = "inherit";
       } else {
         winsO++;
         document.getElementById('oWins').innerHTML = winsO;
-        res.style.display = "inherit";
       }
     }
     // // Win condition third row
     if (document.getElementById('threeOne').innerHTML === elem && document.getElementById('threeTwo').innerHTML === elem && document.getElementById('threeThree').innerHTML === elem) {
       filled = 10;
       turn.innerHTML = `${elem} wins!`;
+      res.style.display = "inherit";
       if (player === 0) {
         winsX++;
         document.getElementById('xWins').innerHTML = winsX;
-        res.style.display = "inherit";
       } else {
         winsO++;
         document.getElementById('oWins').innerHTML = winsO;
-        res.style.display = "inherit";
       }
     }
     // // Win condition diagonal 1
     if (document.getElementById('oneOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('threeThree').innerHTML === elem) {
       filled = 10;
       turn.innerHTML = `${elem} wins!`;
+      res.style.display = "inherit";
       if (player === 0) {
         winsX++;
         document.getElementById('xWins').innerHTML = winsX;
-        res.style.display = "inherit";
       } else {
         winsO++;
         document.getElementById('oWins').innerHTML = winsO;
-        res.style.display = "inherit";
       }
     }
     // // Win condition diagonal 2
-    if (document.getElementById('threeOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('threeOne').innerHTML === elem) {
+    if (document.getElementById('threeOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('oneThree').innerHTML === elem) {
       filled = 10;
       turn.innerHTML = `${elem} wins!`;
+      res.style.display = "inherit";
       if (player === 0) {
         winsX++;
         document.getElementById('xWins').innerHTML = winsX;
-        res.style.display = "inherit";
       } else {
         winsO++;
         document.getElementById('oWins').innerHTML = winsO;
-        res.style.display = "inherit";
       }
     }
     if (filled === 9) {
@@ -174,11 +169,13 @@
           player = 0;
           turn.innerHTML = 'O';
           checkWin('X');
+          runAi();
         } else {
           this.innerHTML = 'O';
           player = 1;
           turn.innerHTML = 'X';
           checkWin('O');
+          runAi();
         }
       }
     }
@@ -189,15 +186,11 @@
     player = 1;
     turn.innerHTML = 'X';
     res.style.display = "none"; 
+    emptyBoxes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
   }
   res.addEventListener('click', reset);
+
   // AI time
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-  
   function aiMove() {
     console.log('ai ran');
     var rand = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
@@ -205,7 +198,6 @@
     switch (rand) {
       case 'one':
         if (document.getElementById('oneOne').innerHTML !== 'X' && document.getElementById('oneOne').innerHTML !== 'O') {
-          console.log('clicking first');
           document.getElementById('oneOne').click();
         } else {
           console.log('need new int');
@@ -215,9 +207,8 @@
         }
         break;
       case 'two':
-        if (document.getElementById('twoOne').innerHTML !== 'X' && document.getElementById('twoOne').innerHTML !== 'O') {
-          console.log('clicking second');
-          document.getElementById('twoOne').click();
+        if (document.getElementById('oneTwo').innerHTML !== 'X' && document.getElementById('oneTwo').innerHTML !== 'O') {
+          document.getElementById('oneTwo').click();
         } else {
           console.log('need new int');
           let index = emptyBoxes.indexOf('two');
@@ -226,9 +217,8 @@
         }
         break;
       case 'three':
-        if (document.getElementById('threeOne').innerHTML !== 'X' && document.getElementById('threeOne').innerHTML !== 'O') {
-          console.log('clicking third');
-          document.getElementById('threeOne').click();
+        if (document.getElementById('oneThree').innerHTML !== 'X' && document.getElementById('oneThree').innerHTML !== 'O') {
+          document.getElementById('oneThree').click();
         } else {
           console.log('need new int');
           let index = emptyBoxes.indexOf('three');
@@ -236,17 +226,80 @@
           aiMove();
         }
         break;
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-      case 9:
+      case 'four':
+        if (document.getElementById('twoOne').innerHTML !== 'X' && document.getElementById('twoOne').innerHTML !== 'O') {
+          document.getElementById('twoOne').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('four');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 'five':
+        if (document.getElementById('twoTwo').innerHTML !== 'X' && document.getElementById('twoTwo').innerHTML !== 'O') {
+          document.getElementById('twoTwo').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('five');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 'six':
+        if (document.getElementById('twoThree').innerHTML !== 'X' && document.getElementById('twoThree').innerHTML !== 'O') {
+          document.getElementById('twoThree').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('six');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 'seven':
+        if (document.getElementById('threeOne').innerHTML !== 'X' && document.getElementById('threeOne').innerHTML !== 'O') {
+          document.getElementById('threeOne').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('seven');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 'eight':
+        if (document.getElementById('threeTwo').innerHTML !== 'X' && document.getElementById('threeTwo').innerHTML !== 'O') {
+          document.getElementById('threeTwo').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('eight');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 'nine':
+        if (document.getElementById('threeThree').innerHTML !== 'X' && document.getElementById('threeThree').innerHTML !== 'O') {
+          document.getElementById('threeThree').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('nine');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
       default:
         break;
     }
   }
-  document.getElementById('ai').addEventListener('click', aiMove);
+  function runAi() {
+    if (player === 0) {
+      console.log('running ai');
+      aiMove();
+      return;
+    } else {
+      return;
+    }
+  }
+  //document.getElementById('ai').addEventListener('click', aiMove);
   boxes.forEach(box => box.addEventListener('click', displayChar));
 </script>
 </body>
