@@ -16,11 +16,12 @@
   <p class="turn">Turn: <span class="turnText"></span></p>
   <div id="board">
     <div id="oneOne" class="box"></div><div id="oneTwo" class="box"></div><div id="oneThree" class="box"></div>
-    <div id="TwoOne" class="box"></div><div id="twoTwo" class="box"></div><div id="threeThree" class="box"></div>
-    <div id="threeOne" class="box"></div><div id="secondTwo" class="box"></div><div id="threeThree" class="box"></div>
+    <div id="twoOne" class="box"></div><div id="twoTwo" class="box"></div><div id="twoThree" class="box"></div>
+    <div id="threeOne" class="box"></div><div id="threeTwo" class="box"></div><div id="threeThree" class="box"></div>
   </div>
   <p class="score">X wins: <span id="xWins">0</span> | Ties: <span id="ties">0</span> | O wins: <span id="oWins">0</span></p>
   <p id="resetText">Reset</p>
+  <p id="ai">AI</p>
 </div>
 
 <style>
@@ -35,9 +36,6 @@
     background: #3F51B5;
   }
   .container {
-    /*height: 400px;*/
-    /* max-width: 500px; */
-    /* max-height: 350px; */
     max-width: 350px;
     background: rgba(34, 34, 34, 0.85);
     box-shadow: 0 0 0 5px rgba(0,0,0,0.1);
@@ -87,8 +85,10 @@
   let winsO = 0;
   let tie = 0;
   let filled = 0;
+  let emptyBoxes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 
   function checkWin(elem) {
+    // Win condition first row
     if (document.getElementById('oneOne').innerHTML === elem && document.getElementById('oneTwo').innerHTML === elem && document.getElementById('oneThree').innerHTML === elem) {
       filled = 10;
       turn.innerHTML = `${elem} wins!`;
@@ -101,7 +101,63 @@
         document.getElementById('oWins').innerHTML = winsO;
         res.style.display = "inherit";
       }
-    } 
+    }
+    // Win condition second row
+    if (document.getElementById('twoOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('twoThree').innerHTML === elem) {
+      filled = 10;
+      turn.innerHTML = `${elem} wins!`;
+      if (player === 0) {
+        winsX++;
+        document.getElementById('xWins').innerHTML = winsX;
+        res.style.display = "inherit";
+      } else {
+        winsO++;
+        document.getElementById('oWins').innerHTML = winsO;
+        res.style.display = "inherit";
+      }
+    }
+    // // Win condition third row
+    if (document.getElementById('threeOne').innerHTML === elem && document.getElementById('threeTwo').innerHTML === elem && document.getElementById('threeThree').innerHTML === elem) {
+      filled = 10;
+      turn.innerHTML = `${elem} wins!`;
+      if (player === 0) {
+        winsX++;
+        document.getElementById('xWins').innerHTML = winsX;
+        res.style.display = "inherit";
+      } else {
+        winsO++;
+        document.getElementById('oWins').innerHTML = winsO;
+        res.style.display = "inherit";
+      }
+    }
+    // // Win condition diagonal 1
+    if (document.getElementById('oneOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('threeThree').innerHTML === elem) {
+      filled = 10;
+      turn.innerHTML = `${elem} wins!`;
+      if (player === 0) {
+        winsX++;
+        document.getElementById('xWins').innerHTML = winsX;
+        res.style.display = "inherit";
+      } else {
+        winsO++;
+        document.getElementById('oWins').innerHTML = winsO;
+        res.style.display = "inherit";
+      }
+    }
+    // // Win condition diagonal 2
+    if (document.getElementById('threeOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('threeOne').innerHTML === elem) {
+      filled = 10;
+      turn.innerHTML = `${elem} wins!`;
+      if (player === 0) {
+        winsX++;
+        document.getElementById('xWins').innerHTML = winsX;
+        res.style.display = "inherit";
+      } else {
+        winsO++;
+        document.getElementById('oWins').innerHTML = winsO;
+        res.style.display = "inherit";
+      }
+    }
     if (filled === 9) {
       turn.innerHTML = "It's a tie!";
       tie++;
@@ -135,6 +191,62 @@
     res.style.display = "none"; 
   }
   res.addEventListener('click', reset);
+  // AI time
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+  
+  function aiMove() {
+    console.log('ai ran');
+    var rand = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+    console.log(rand);
+    switch (rand) {
+      case 'one':
+        if (document.getElementById('oneOne').innerHTML !== 'X' && document.getElementById('oneOne').innerHTML !== 'O') {
+          console.log('clicking first');
+          document.getElementById('oneOne').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('one');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 'two':
+        if (document.getElementById('twoOne').innerHTML !== 'X' && document.getElementById('twoOne').innerHTML !== 'O') {
+          console.log('clicking second');
+          document.getElementById('twoOne').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('two');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 'three':
+        if (document.getElementById('threeOne').innerHTML !== 'X' && document.getElementById('threeOne').innerHTML !== 'O') {
+          console.log('clicking third');
+          document.getElementById('threeOne').click();
+        } else {
+          console.log('need new int');
+          let index = emptyBoxes.indexOf('three');
+          emptyBoxes.splice(index, 1);
+          aiMove();
+        }
+        break;
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      default:
+        break;
+    }
+  }
+  document.getElementById('ai').addEventListener('click', aiMove);
   boxes.forEach(box => box.addEventListener('click', displayChar));
 </script>
 </body>
