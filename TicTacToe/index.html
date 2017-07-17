@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
-  <!--<link href="css/style.css" rel="stylesheet">-->
 </head>
 <body>
 <div class="container">
@@ -25,7 +24,6 @@
   </div>
   <p class="score">X wins: <span id="xWins">0</span> | Ties: <span id="ties">0</span> | O wins: <span id="oWins">0</span></p>
   <p id="resetText">Reset</p>
-  <!-- <p id="ai">AI</p> -->
 </div>
 
 <style>
@@ -48,12 +46,8 @@
     text-align: center;
     color: #fafafa;
   }
-  .chooser {
-    display: none;
-  }
-  .choice {
-    font-size: 40px;
-    margin: 10px;
+  #choiceDiv > p {
+    margin-top: 0;
   }
   .turn {
     margin: 0 0 5 0;
@@ -91,85 +85,39 @@
   let filled = 0;
   let isAiTurn = true;
   let emptyBoxes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  let allowChoice = true;
 
   // Side chooser
   function chooser() {
-    console.log('ran choice');
-    player = 1;
-    if (this.value === 'O') {
-      console.log('ran choice true');
-      isAiTurn = true;
-      runAi();
+    if (allowChoice) {
+      allowChoice = false;
+      player = 1;
+      if (this.value === 'O') {
+        console.log('ran choice true');
+        isAiTurn = true;
+        runAi();
+      }
+    } else {
+      return;
     }
   }
-
   document.getElementById('xRadio').addEventListener('click', chooser);
   document.getElementById('oRadio').addEventListener('click', chooser);
-
+  // Check win status
+  const winArray = [['oneOne', 'oneTwo', 'oneThree'], ['twoOne', 'twoTwo', 'twoThree'], ['threeOne', 'threeTwo', 'threeThree'], ['oneOne', 'twoOne', 'threeOne'], ['oneTwo', 'twoTwo', 'threeTwo'], ['oneThree', 'twoThree', 'threeThree'], ['oneOne', 'twoTwo', 'threeThree'], ['threeOne', 'twoTwo', 'oneThree']];
   function checkWin(elem) {
-    // Win condition first row
-    if (document.getElementById('oneOne').innerHTML === elem && document.getElementById('oneTwo').innerHTML === elem && document.getElementById('oneThree').innerHTML === elem) {
-      filled = 10;
-      turn.innerHTML = `${elem} wins!`;
-      res.style.display = "inherit";
-      if (player === 0) {
-        winsX++;
-        document.getElementById('xWins').innerHTML = winsX;
-      } else {
-        winsO++;
-        document.getElementById('oWins').innerHTML = winsO;
-      }
-    }
-    // Win condition second row
-    if (document.getElementById('twoOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('twoThree').innerHTML === elem) {
-      filled = 10;
-      turn.innerHTML = `${elem} wins!`;
-      res.style.display = "inherit";
-      if (player === 0) {
-        winsX++;
-        document.getElementById('xWins').innerHTML = winsX;
-      } else {
-        winsO++;
-        document.getElementById('oWins').innerHTML = winsO;
-      }
-    }
-    // // Win condition third row
-    if (document.getElementById('threeOne').innerHTML === elem && document.getElementById('threeTwo').innerHTML === elem && document.getElementById('threeThree').innerHTML === elem) {
-      filled = 10;
-      turn.innerHTML = `${elem} wins!`;
-      res.style.display = "inherit";
-      if (player === 0) {
-        winsX++;
-        document.getElementById('xWins').innerHTML = winsX;
-      } else {
-        winsO++;
-        document.getElementById('oWins').innerHTML = winsO;
-      }
-    }
-    // // Win condition diagonal 1
-    if (document.getElementById('oneOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('threeThree').innerHTML === elem) {
-      filled = 10;
-      turn.innerHTML = `${elem} wins!`;
-      res.style.display = "inherit";
-      if (player === 0) {
-        winsX++;
-        document.getElementById('xWins').innerHTML = winsX;
-      } else {
-        winsO++;
-        document.getElementById('oWins').innerHTML = winsO;
-      }
-    }
-    // // Win condition diagonal 2
-    if (document.getElementById('threeOne').innerHTML === elem && document.getElementById('twoTwo').innerHTML === elem && document.getElementById('oneThree').innerHTML === elem) {
-      filled = 10;
-      turn.innerHTML = `${elem} wins!`;
-      res.style.display = "inherit";
-      if (player === 0) {
-        winsX++;
-        document.getElementById('xWins').innerHTML = winsX;
-      } else {
-        winsO++;
-        document.getElementById('oWins').innerHTML = winsO;
+    for (var i = 0; i < winArray.length; i++) {
+      if (document.getElementById(winArray[i][0]).innerHTML === elem && document.getElementById(winArray[i][1]).innerHTML === elem && document.getElementById(winArray[i][2]).innerHTML === elem) {
+        filled = 10;
+        turn.innerHTML = `${elem} wins!`;
+        res.style.display = "inherit";
+        if (player === 0) {
+          winsX++;
+          document.getElementById('xWins').innerHTML = winsX;
+        } else {
+          winsO++;
+          document.getElementById('oWins').innerHTML = winsO;
+        }
       }
     }
     if (filled === 9) {
@@ -179,6 +127,8 @@
       res.style.display = "inherit";
     }
   }
+  // Display a character
+  let availableBoxes = ['oneOne', 'oneTwo', 'oneThree', 'twoOne', 'twoTwo', 'twoThree', 'threeOne', 'threeTwo', 'threeThree'];
   function displayChar() {
     if (player === undefined) {
       console.log('please select');
@@ -192,143 +142,55 @@
           this.innerHTML = 'X';
           player = 0;
           turn.innerHTML = 'O';
+          let index = availableBoxes.indexOf(this.id);
+          availableBoxes.splice(index, 1);
           checkWin('X');
           runAi();
         } else {
           this.innerHTML = 'O';
           player = 1;
           turn.innerHTML = 'X';
+          let index = availableBoxes.indexOf(this.id);
+          availableBoxes.splice(index, 1);
           checkWin('O');
           runAi();
         }
       }
     }
   }
+  // Reset functionality
   function reset() {
     boxes.forEach(box => box.innerHTML = "");
     filled = 0;
     player = undefined;
     turn.innerHTML = 'X';
     res.style.display = "none"; 
-    emptyBoxes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    availableBoxes = ['oneOne', 'oneTwo', 'oneThree', 'twoOne', 'twoTwo', 'twoThree', 'threeOne', 'threeTwo', 'threeThree'];
     document.getElementById("xRadio").checked = false;
     document.getElementById("oRadio").checked = false;
+    allowChoice = true;
+    document.getElementById('choiceDiv').style.color = '#FAFAFA';
   }
   res.addEventListener('click', reset);
 
-  // AI time
+  // AI functionality
   function aiMove() {
-    console.log('ai ran');
-    var rand = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
-    console.log(rand);
-    switch (rand) {
-      case 'one':
-        if (document.getElementById('oneOne').innerHTML !== 'X' && document.getElementById('oneOne').innerHTML !== 'O') {
-          document.getElementById('oneOne').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('one');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'two':
-        if (document.getElementById('oneTwo').innerHTML !== 'X' && document.getElementById('oneTwo').innerHTML !== 'O') {
-          document.getElementById('oneTwo').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('two');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'three':
-        if (document.getElementById('oneThree').innerHTML !== 'X' && document.getElementById('oneThree').innerHTML !== 'O') {
-          document.getElementById('oneThree').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('three');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'four':
-        if (document.getElementById('twoOne').innerHTML !== 'X' && document.getElementById('twoOne').innerHTML !== 'O') {
-          document.getElementById('twoOne').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('four');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'five':
-        if (document.getElementById('twoTwo').innerHTML !== 'X' && document.getElementById('twoTwo').innerHTML !== 'O') {
-          document.getElementById('twoTwo').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('five');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'six':
-        if (document.getElementById('twoThree').innerHTML !== 'X' && document.getElementById('twoThree').innerHTML !== 'O') {
-          document.getElementById('twoThree').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('six');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'seven':
-        if (document.getElementById('threeOne').innerHTML !== 'X' && document.getElementById('threeOne').innerHTML !== 'O') {
-          document.getElementById('threeOne').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('seven');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'eight':
-        if (document.getElementById('threeTwo').innerHTML !== 'X' && document.getElementById('threeTwo').innerHTML !== 'O') {
-          document.getElementById('threeTwo').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('eight');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      case 'nine':
-        if (document.getElementById('threeThree').innerHTML !== 'X' && document.getElementById('threeThree').innerHTML !== 'O') {
-          document.getElementById('threeThree').click();
-        } else {
-          console.log('need new int');
-          let index = emptyBoxes.indexOf('nine');
-          emptyBoxes.splice(index, 1);
-          aiMove();
-        }
-        break;
-      default:
-        break;
+    if (availableBoxes.length > 0) {
+      let rand = availableBoxes[Math.floor(Math.random() * availableBoxes.length)];
+      document.getElementById(rand).click();
+    } else {
+      return;
     }
   }
   function runAi() {
-    console.log('running ai');
-    
     if (isAiTurn === true) {
-      console.log('running ai true');
       isAiTurn = false;
       aiMove();
     } else {
-      console.log('running ai false');
       isAiTurn = true;
     }
   }
-  //document.getElementById('ai').addEventListener('click', aiMove);
+  // Game mechanic
   boxes.forEach(box => box.addEventListener('click', displayChar));
 </script>
 </body>

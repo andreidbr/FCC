@@ -16,3 +16,5 @@ These are my current projects:
 [JS Calculator](https://github.com/andreidbr/FCC/tree/master/JSCalc)
 
 [Pomodoro Clock](https://github.com/andreidbr/FCC/tree/master/Pomodoro)
+
+[TicTacToe Game](https://github.com/andreidbr/FCC/tree/master/TicTacToe)
