@@ -9,9 +9,13 @@
 </head>
 <body>
 <div class="container">
-  <div class="chooser">
-    <p>Choose your weapon but remember that X always goes first:</p>
-    <p><span class="choice" id="pickX">X</span> or <span class="choice" id="pickO">O</span></p>
+  <div id="choiceDiv">
+    <p>Choose your weapon: 
+      <form action="">
+        <input type="radio" name="xChoice" value="X" id="xRadio"> X
+        <input type="radio" name="oChoice" value="O" id="oRadio"> O
+      </form>
+    </p>
   </div>
   <p class="turn">Turn: <span class="turnText"></span></p>
   <div id="board">
@@ -79,13 +83,28 @@
   const boxes = document.querySelectorAll('.box');
   let turn = document.querySelector('.turnText');
   const res = document.getElementById('resetText');
-  let player = 1;
+  let player;
   turn.innerHTML = 'X';
   let winsX = 0;
   let winsO = 0;
   let tie = 0;
   let filled = 0;
+  let isAiTurn = true;
   let emptyBoxes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+  // Side chooser
+  function chooser() {
+    console.log('ran choice');
+    player = 1;
+    if (this.value === 'O') {
+      console.log('ran choice true');
+      isAiTurn = true;
+      runAi();
+    }
+  }
+
+  document.getElementById('xRadio').addEventListener('click', chooser);
+  document.getElementById('oRadio').addEventListener('click', chooser);
 
   function checkWin(elem) {
     // Win condition first row
@@ -161,6 +180,11 @@
     }
   }
   function displayChar() {
+    if (player === undefined) {
+      console.log('please select');
+      document.getElementById('choiceDiv').style.color = '#FF5252';
+      return;
+    }
     if (this.innerHTML !== 'X' && this.innerHTML !== 'O') {
       filled++;
       if (filled <= 9) {
@@ -183,10 +207,12 @@
   function reset() {
     boxes.forEach(box => box.innerHTML = "");
     filled = 0;
-    player = 1;
+    player = undefined;
     turn.innerHTML = 'X';
     res.style.display = "none"; 
     emptyBoxes = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    document.getElementById("xRadio").checked = false;
+    document.getElementById("oRadio").checked = false;
   }
   res.addEventListener('click', reset);
 
@@ -291,12 +317,15 @@
     }
   }
   function runAi() {
-    if (player === 0) {
-      console.log('running ai');
+    console.log('running ai');
+    
+    if (isAiTurn === true) {
+      console.log('running ai true');
+      isAiTurn = false;
       aiMove();
-      return;
     } else {
-      return;
+      console.log('running ai false');
+      isAiTurn = true;
     }
   }
   //document.getElementById('ai').addEventListener('click', aiMove);
