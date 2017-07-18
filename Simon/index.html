@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Simon Says Game</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--<link href="css/style.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="container">
+  <div class="simonLayout">
+    <div id="greenDiv" class="pad"></div>
+    <div id="redDiv" class="pad"></div>
+    <div id="yellowDiv" class="pad"></div>
+    <div id="blueDiv" class="pad"></div>
+    <div id="display">Start</div>
+  </div>
+  <p class="strictBox">Strict mode
+    <input type="checkbox" name="strict" value="Yes" id="yesBox"> Yes<br>
+  </p>
+  <p id="resetText">Reset</p>
+  <p id="tips"></p>
+</div>
+
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    margin: 0;
+    background: #673AB7;
+  }
+  .container {
+    text-align: center;
+  }
+  .simonLayout {
+    min-width: 400px;
+    min-height: 400px;
+    background: #333238;
+    box-shadow: 0 0 0 5px rgba(0,0,0,0.2);
+    /*padding: 50px; */
+    border-radius: 50%;
+    text-align: center;
+    color: #fafafa;
+    position:relative;
+  }
+  .pad {
+    position:absolute;/* why ? */
+    width:180px;
+    height:180px;
+    background:rgba(20,20,20,1);
+    transition:all 300ms ease;
+  }
+  .pad:hover {
+    opacity: 0.7;
+  }
+  #greenDiv {
+    left:15px;
+    top:15px;
+    background:#4CAF50;
+    border-radius:320px 20px 20px;
+  }
+  #redDiv {
+    right:15px;
+    top:15px;
+    background:#F44336;
+    border-radius:20px 320px 20px 20px;
+  }
+  #yellowDiv {
+    bottom:15px;
+    left:15px;
+    background: #FFC107;
+    border-radius:20px 20px 20px 320px;
+  }
+  #blueDiv {
+    bottom:15px;
+    right:15px;
+    background:#2196F3;
+    border-radius:20px 20px 320px 20px;
+  }
+  #display {
+    box-shadow: inset 0 0 25px rgba(0,0,0,0.3);
+    position:absolute;
+    border-radius:50%;
+    border:10px solid #333238;
+    cursor: pointer;
+    display:block;
+    background:#fafafa;
+    width:120px;
+    padding-top:40px;/* dont remove */
+    height:80px;
+    left:50%;
+    top:50%;
+    text-align:center;
+    z-index:100;
+    margin:-70px;
+    color: #212121;
+    font-size: 25px;
+    line-height: 155%;
+  }
+</style>
+
+<script>
+  
+</script>
+</body>
+</html>
