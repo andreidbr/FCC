@@ -108,7 +108,13 @@
 <script>
   // Strict mode functionality
   let strictMode = false;
-  document.getElementById('yesBox').addEventListener('click', () => { strictMode = true; });
+  document.getElementById('yesBox').addEventListener('click', () => {
+    if (turns !== 0) {
+      reset();
+    }
+    strictMode = true; 
+    document.getElementById('yesBox').checked = true;
+  });
 
   // Reset functionality
   function reset() {
@@ -117,8 +123,13 @@
     strictMode = false;
     aiMoves = [];
     playerMoves = [];
-    document.getElementById('tips').innerText = '';
-    //TODO
+    turns = 0;
+    document.getElementById('display').innerText = 'Start';
+    document.getElementById('resetText').style.color = '#E91E63';
+    setTimeout(function() {
+      document.getElementById('resetText').style.color = '#212121';
+    }, 500);
+    clearInterval(moves);
   }
   document.getElementById('resetText').addEventListener('click', reset);
 
@@ -128,24 +139,34 @@
   let possibleMoves = ['green', 'red', 'yellow', 'blue'];
   const pads = document.querySelectorAll('.pad');
   let current;
-  let moves = 0;
+  let turns = 0;
   let rand;
+  let moves;
+  const green = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3');
+  const red = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3');
+  const yellow = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3');
+  const blue = new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3');
+
   function simonStart() {
-    console.log('started Simon');
-    if (moves < 5) {
+    if (turns < 20) {
       rand = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
       aiMoves.push(rand);
-      document.getElementById('tips').innerText = aiMoves;
+      // If you want some help :)
+      // document.getElementById('tips').innerText = aiMoves;
+      document.getElementById('display').innerText = turns + 1;
       repeatPattern();
-      moves++;
+      turns++;
     } else {
-      console.log('you win');
+      document.getElementById('display').innerText = 'You win!';
     }
   }
+
   function repeatPattern() {
+    pads.forEach(pad => pad.style.pointerEvents = 'none');
     let i = 0;
-    let moves = setInterval(function(){
+    moves = setInterval(function(){
       var currentMove = aiMoves[i];
+      (eval(currentMove)).play();
       document.getElementById(currentMove).style.opacity = '0.7';
       setTimeout(function() {
         document.getElementById(currentMove).style.opacity = '';
@@ -153,34 +174,49 @@
       i++;
       if (i >= aiMoves.length) {
         clearInterval(moves);
+        pads.forEach(pad => pad.style.pointerEvents = '');
       }
     }, 700);
     playerMoves = [];
   }
 
   function padClick() {
-    
     current = this.id;
-    console.log('clicked ' + current);
+    (eval(current)).play();
     document.getElementById(current).style.opacity = '0.7';
     setTimeout(function() {
       document.getElementById(current).style.opacity = '';
     }, 300);
     playerMoves.push(current);
-    document.getElementById('moves').innerText = playerMoves;
+    // document.getElementById('moves').innerText = playerMoves;
     winStatus();
   }
 
   function winStatus() {
-    if (aiMoves.length !== playerMoves.length) {
+    if (aiMoves.length >= playerMoves.length) {
       for (let i = 0; i < playerMoves.length; i++) {
         if (playerMoves[i] === aiMoves[i]) {
-          console.log('keep going ' + i);
+          console.log('keep going ' + (i + 1));
         } else {
-          console.log('wrong ' + i);
+          document.getElementById('display').style.background = '#E91E63';
+          setTimeout(function() {
+            document.getElementById('display').style.background = '#FAFAFA';
+          }, 500);
+          console.log('wrong ' + (i + 1));
+          if (strictMode === true) {
+            reset();
+          } else {
+            repeatPattern();
+          }
         }
       }
+      if (turns <= 20 && aiMoves.length === playerMoves.length) {
+        setTimeout(function() {
+            simonStart();
+          }, 1000);
+      };
     }
+    
   }
 
   pads.forEach(pad => pad.addEventListener('click', padClick));

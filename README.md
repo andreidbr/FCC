@@ -18,3 +18,5 @@ These are my current projects:
 [Pomodoro Clock](https://github.com/andreidbr/FCC/tree/master/Pomodoro)
 
 [TicTacToe Game](https://github.com/andreidbr/FCC/tree/master/TicTacToe)
+
+[Simon Says](https://github.com/andreidbr/FCC/tree/master/Simon)
